@@ -18,7 +18,7 @@ export const getMovieInfo = async (movieName: string, year: number) => {
       method: "get",
       url: `${
         process.env?.["TMDB_BASE_URL"]
-      }3/search/movie?query=${movieName.replaceAll(
+      }3/search/movie?query=${movieName.replace(
         " ",
         "+"
       )}&Year=${year}&api_key=${process.env?.["TMDB_API_KEY"]}`,

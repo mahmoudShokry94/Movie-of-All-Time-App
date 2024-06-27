@@ -1,0 +1,252 @@
+openapi: 3.0.0
+info:
+    version: 1.0.0
+    title: Sample API
+servers:
+    - url: http://127.0.0.1:8080
+      description: Development server
+tags:
+    - name: Movie
+      description: Movie API's
+paths:
+  /movies:
+    post:
+      tags:
+        - Movie
+      summary: Insert a Movies.
+      description: Insert Movie
+      operationId: insertMovie
+      x-eov-operation-handler: movies
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InsertMovieRequestBody'    
+      responses:
+        "201":
+          description: Movie is Inserted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    get:
+      tags:
+        - Movie
+      summary: Search a Movies.
+      description: Search Movies with Pagination.
+      operationId: getMovies
+      x-eov-operation-handler: movies
+      parameters:
+        - in: query
+          name: pageIndex
+          schema:
+            type: integer
+        - in: query
+          name: pageSize
+          schema:
+            type: integer
+        - in: query
+          name: genre
+          schema:
+            type: string
+        - in: query
+          name: name
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A List Of Movies
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMoviesResponse'
+  /movies/{id}:
+    get:
+      tags:
+        - Movie
+      summary: Get Movie by ID.
+      description: Get Movie by ID.
+      operationId: getMovieById
+      x-eov-operation-handler: movies
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Movie is returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMovieResponse'
+    put:
+      tags:
+        - Movie
+      summary: Update a Movie.
+      description: Update a Movie.
+      operationId: updateMovie
+      x-eov-operation-handler: movies
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InsertMovieRequestBody'    
+      responses:
+        "200":
+          description: Movie is updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/Movie'
+    delete:
+      tags:
+        - Movie
+      summary: Delete a Movie.
+      description: Delete a Movie.
+      operationId: deleteMovie
+      x-eov-operation-handler: movies
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Movie is deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /movies/{id}/favourites:
+      patch:
+        tags:
+          - Movie
+        summary: Add Movie to Favourites.
+        description: Add Movie to Favourites.
+        operationId: addMovieToFavourites
+        x-eov-operation-handler: movies
+        parameters:
+          - in: path
+            name: id
+            required: true
+            schema:
+              type: string
+              format: uuid
+        responses:
+          "200":
+            description: Adding Movie to Favourites
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GetMoviesResponse'
+components:
+  schemas:
+    GetMoviesResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            resultReport:
+              $ref: '#/components/schemas/ResultReport'
+            results:
+              $ref: '#/components/schemas/Movie'
+    GetMovieResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/Movie'
+    ResultReport:
+      type: object
+      additionalProperties: false
+      properties:
+        pageIndex:
+          type: integer
+        pageSize:
+          type: integer
+        totalCount:
+          type: integer
+    Movie:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        country:
+          type: array
+          items:
+            type: string
+        year:
+          type: integer
+        colour:
+          type: array
+          items:
+            type: string
+        genre:
+          type: array
+          items:
+            type: string
+        favorited:
+          type: boolean
+        additionalDetails:
+          type: object
+          additionalProperties: false
+          properties:
+            overview:
+              type: string
+            popularity:
+              type: string
+            adult:
+              type: boolean
+    InsertMovieRequestBody:
+      type: object
+      additionalProperties: false
+      properties:
+        title:
+          type: string
+        country:
+          type: array
+          items:
+            type: string
+        year:
+          type: integer
+        colour:
+          type: array
+          items:
+            type: string
+            enum: [BW , Col]
+        genre:
+          type: array
+          items:
+            type: string

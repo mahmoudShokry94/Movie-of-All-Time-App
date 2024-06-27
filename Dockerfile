@@ -1,23 +1,31 @@
-# Use the official Node.js 14 image as the base image
-FROM node:14
+FROM node as builder
 
-# Create and change to the app directory
+# Create app directory
 WORKDIR /usr/src/app
 
-# Copy application dependency manifests to the container image
+# Install app dependencies
 COPY package*.json ./
 
-# Install production dependencies
-RUN npm install
+RUN npm ci
 
-# Copy the local code to the container image
 COPY . .
 
-# Build the TypeScript code
 RUN npm run build
 
-# Expose the port the app runs on
-EXPOSE 8080
+FROM node:slim
 
-# Run the web service on container startup
-CMD [ "npm", "start" ]
+ENV NODE_ENV production
+USER node
+
+# Create app directory
+WORKDIR /usr/src/app
+
+# Install app dependencies
+COPY package*.json ./
+
+RUN npm ci --production
+
+COPY --from=builder /usr/src/app/dist ./dist
+
+EXPOSE 8080
+CMD [ "node", "dist/index.js" ]
