@@ -11,12 +11,12 @@
       "esModuleInterop": true,
       "sourceMap": true,
       "typeRoots": ["./node_modules/@types", "src/types"],
-      "types": ["node"],
+      "types": ["node", "jest"],
       "lib": ["ES6", "DOM"],
       "allowSyntheticDefaultImports": true,
       "allowJs": true
   },
   "exclude": ["./node_modules", "./dist", "./.vscode", "./.git"],
-  "include": ["src/**/*", "__tests__/**/*"],
+  "include": ["src/**/*", "__tests__/**/*", "jest.config.ts"],
   
 }
