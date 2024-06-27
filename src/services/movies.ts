@@ -1,3 +1,4 @@
+import { NotFoundError } from "../Error/error";
 import * as MovieRepository from "../repositories/movies";
 import Movie from "../types/Movie";
 
@@ -26,4 +27,16 @@ export const insertMovie = async (
   console.log("Service...insertMovie...");
 
   return MovieRepository.insertMovie(payload);
+};
+
+export const getMovieById = async (id: string) => {
+  console.log("Service...getMovieById...");
+
+  const movie = await MovieRepository.getMovieById(id);
+
+  if (!movie) {
+    throw new NotFoundError("Movie not found");
+  }
+
+  return movie
 };

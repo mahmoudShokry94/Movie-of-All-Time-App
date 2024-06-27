@@ -31,3 +31,16 @@ export const getMovies = async (req: Request, res: Response) => {
     data: respone,
   });
 };
+
+export const getMovieById = async (req: Request, res: Response) => {
+  console.log("Controller...getMovieById...");
+
+  const movieId = req.params.id;
+
+  const respone = await MovieService.getMovieById(movieId);
+
+  res.status(200).json({
+    message: "Movie is Returned Succcessfully ",
+    data: respone,
+  });
+};

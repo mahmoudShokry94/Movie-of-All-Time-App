@@ -64,6 +64,28 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetMoviesResponse'
+  /movies/{id}:
+    get:
+      tags:
+        - Movie
+      summary: Get Movie by ID.
+      description: Get Movie by ID.
+      operationId: getMovieById
+      x-eov-operation-handler: movies
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Movie is returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMovieResponse'
 
 components:
   schemas:
@@ -79,7 +101,13 @@ components:
               $ref: '#/components/schemas/ResultReport'
             results:
               $ref: '#/components/schemas/Movie'
-
+    GetMovieResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/Movie'
     ResultReport:
       type: object
       additionalProperties: false
@@ -118,8 +146,12 @@ components:
           type: object
           additionalProperties: false
           properties:
-            director:
+            overview:
               type: string
+            popularity:
+              type: string
+            adult:
+              type: boolean
     InsertMovieRequestBody:
       type: object
       additionalProperties: false

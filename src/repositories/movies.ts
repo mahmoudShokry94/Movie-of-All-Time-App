@@ -84,3 +84,8 @@ export const insertMovie = async (payload: Pick<Movie, "title" | "country" | "ye
   return MovieModel.create(payload);
 };
 
+export const getMovieById = async (id: string) => {
+  console.log("Respository...getMovieById...");
+
+  return MovieModel.findOne({ movieId: id }).select("-_id -__v -createdAt -updatedAt");
+};
