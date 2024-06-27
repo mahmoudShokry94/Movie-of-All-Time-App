@@ -69,3 +69,16 @@ export const deleteMovie = async (req: Request, res: Response) => {
     message: "Movie has been deleted Succcessfully ",
   });
 };
+
+export const addMovieToFavourites = async (req: Request, res: Response) => {
+  console.log("Controller...addMovieToFavourites...");
+
+  const movieId = req?.params["id"] as string;
+
+  const respone = await MovieService.addMovieToFavourites(movieId);
+
+  res.status(200).json({
+    message: "Movie added to Favourites Successfully",
+    data: respone,
+  });
+};

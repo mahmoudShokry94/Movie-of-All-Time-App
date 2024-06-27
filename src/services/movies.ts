@@ -1,5 +1,6 @@
-import { NotFoundError } from "../Error/error";
+import { NotFoundError, ValidationError } from "../Error/error";
 import * as MovieRepository from "../repositories/movies";
+import { getMovieInfo } from "../repositories/tmdb";
 import Movie from "../types/Movie";
 
 export const getMovies = async ({
@@ -66,4 +67,29 @@ export const deleteMovie = async (id: string) => {
   }
 
   return MovieRepository.deleteMovie(id);
+};
+
+export const addMovieToFavourites = async (movieId: string) => {
+  console.log("Service...addMovieToFavourites...");
+
+  const movieInfo = await MovieRepository.getMovieById(movieId);
+
+  if (!movieInfo) {
+    throw new NotFoundError(`Movie with ID ${movieId} not found`);
+  }
+
+  if (movieInfo?.isFavourite) {
+    throw new ValidationError(`Movie with ID ${movieId} is already added to favourites`);
+  }
+  const { adult, overview, popularity } = await getMovieInfo(
+    movieInfo.title,
+    movieInfo.year
+  );
+
+
+  return await MovieRepository.updateMovie(movieId, {
+    isFavourite: true,
+    additionalDetails: { adult, overview, popularity },
+  });
+
 };
