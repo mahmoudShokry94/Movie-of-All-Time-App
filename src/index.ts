@@ -36,7 +36,7 @@ app.use((error: any, _req: Request, res: Response, _next: NextFunction) => {
 });
 
 initDB(async () => {
-  (await import("./seeder/moviesSeeder")).default();
+  // (await import("./seeder/moviesSeeder")).default();
 
   app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

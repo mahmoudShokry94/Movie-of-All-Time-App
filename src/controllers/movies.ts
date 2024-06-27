@@ -1,11 +1,33 @@
 import type { Request, Response } from "express";
+import * as MovieService from "../services/movies";
+
+export const insertMovie = async (req: Request, res: Response) => {
+  console.log("Controller...insertMovie...");
+
+  await MovieService.insertMovie(req.body);
+
+  res.status(201).json({
+    message: "Movie has been inserted Succcessfully ",
+  });
+};
 
 export const getMovies = async (req: Request, res: Response) => {
   console.log("Controller...getMovies...");
 
+  const pageIndex = parseInt((req?.query["pageIndex"] as string) ?? "0");
+  const pageSize = parseInt((req?.query["pageSize"] as string) ?? "5");
+  const movieGenre = req?.query["genre"] as string;
+  const movieName = req?.query["name"] as string;
+
+  const respone = await MovieService.getMovies({
+    pageIndex,
+    pageSize,
+    movieGenre,
+    movieName,
+  });
 
   res.status(200).json({
     message: "Movies are Listed Succcessfully ",
-    data: {},
+    data: respone,
   });
 };

@@ -18,7 +18,6 @@ const importCSV = async () => {
         year: parseInt(row?.["Year"], 10),
         colour: row?.["Colour"].split("-"),
         country: row?.["Country"]?.split("-"),
-        director: row?.["Director"]?.split(",").reverse().join(" ").trim(),
       };
       movies.push({
         updateOne: {

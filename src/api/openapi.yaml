@@ -8,3 +8,136 @@ servers:
 tags:
     - name: Movie
       description: Movie API's
+paths:
+  /movies:
+    post:
+      tags:
+        - Movie
+      summary: Insert a Movies.
+      description: Insert Movie
+      operationId: insertMovie
+      x-eov-operation-handler: movies
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InsertMovieRequestBody'    
+      responses:
+        "201":
+          description: Movie is Inserted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    get:
+      tags:
+        - Movie
+      summary: Search a Movies.
+      description: Search Movies with Pagination.
+      operationId: getMovies
+      x-eov-operation-handler: movies
+      parameters:
+        - in: query
+          name: pageIndex
+          schema:
+            type: integer
+        - in: query
+          name: pageSize
+          schema:
+            type: integer
+        - in: query
+          name: genre
+          schema:
+            type: string
+        - in: query
+          name: name
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A List Of Movies
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMoviesResponse'
+
+components:
+  schemas:
+    GetMoviesResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            resultReport:
+              $ref: '#/components/schemas/ResultReport'
+            results:
+              $ref: '#/components/schemas/Movie'
+
+    ResultReport:
+      type: object
+      additionalProperties: false
+      properties:
+        pageIndex:
+          type: integer
+        pageSize:
+          type: integer
+        totalCount:
+          type: integer
+    Movie:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        country:
+          type: array
+          items:
+            type: string
+        year:
+          type: integer
+        colour:
+          type: array
+          items:
+            type: string
+        genre:
+          type: array
+          items:
+            type: string
+        favorited:
+          type: boolean
+        additionalDetails:
+          type: object
+          additionalProperties: false
+          properties:
+            director:
+              type: string
+    InsertMovieRequestBody:
+      type: object
+      additionalProperties: false
+      properties:
+        title:
+          type: string
+        country:
+          type: array
+          items:
+            type: string
+        year:
+          type: integer
+        colour:
+          type: array
+          items:
+            type: string
+            enum: [BW , Col]
+        genre:
+          type: array
+          items:
+            type: string

@@ -16,9 +16,6 @@ const movieSchema = new mongoose.Schema(
       required: true,
       index: true,
     },
-    director: {
-      type: String,
-    },
     genre: {
       type: [String],
       required: true,
@@ -49,7 +46,7 @@ const movieSchema = new mongoose.Schema(
       },
     },
   },
-  { timestamps: true, _id: false }
+  { timestamps: true }
 );
 
 const connection = getMoviesDb();
