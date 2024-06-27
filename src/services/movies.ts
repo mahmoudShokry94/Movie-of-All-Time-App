@@ -40,3 +40,30 @@ export const getMovieById = async (id: string) => {
 
   return movie
 };
+
+export const updateMovie = async (
+  id: string,
+  payload: Pick<Movie, "title" | "country" | "year" | "colour">
+) => {
+  console.log("Service...updateMovie...");
+
+  const movie = await MovieRepository.getMovieById(id);
+
+  if (!movie) {
+    throw new NotFoundError("Movie not found");
+  }
+
+  return MovieRepository.updateMovie(id, payload);
+};
+
+export const deleteMovie = async (id: string) => {
+  console.log("Service...deleteMovie...");
+
+  const movie = await MovieRepository.getMovieById(id);
+
+  if (!movie) {
+    throw new NotFoundError("Movie not found");
+  }
+
+  return MovieRepository.deleteMovie(id);
+};

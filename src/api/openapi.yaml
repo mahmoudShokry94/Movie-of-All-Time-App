@@ -86,7 +86,62 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetMovieResponse'
-
+    put:
+      tags:
+        - Movie
+      summary: Update a Movie.
+      description: Update a Movie.
+      operationId: updateMovie
+      x-eov-operation-handler: movies
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InsertMovieRequestBody'    
+      responses:
+        "200":
+          description: Movie is updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/Movie'
+    delete:
+      tags:
+        - Movie
+      summary: Delete a Movie.
+      description: Delete a Movie.
+      operationId: deleteMovie
+      x-eov-operation-handler: movies
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Movie is deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
 components:
   schemas:
     GetMoviesResponse:

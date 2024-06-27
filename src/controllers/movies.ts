@@ -44,3 +44,28 @@ export const getMovieById = async (req: Request, res: Response) => {
     data: respone,
   });
 };
+
+export const updateMovie = async (req: Request, res: Response) => {
+  console.log("Controller...updateMovie...");
+
+  const movieId = req.params.id;
+
+  const movie= await MovieService.updateMovie(movieId, req.body);
+
+  res.status(200).json({
+    message: "Movie has been updated Succcessfully ",
+    data:movie
+  });
+};
+
+export const deleteMovie = async (req: Request, res: Response) => {
+  console.log("Controller...deleteMovie...");
+
+  const movieId = req.params.id;
+
+  await MovieService.deleteMovie(movieId);
+
+  res.status(200).json({
+    message: "Movie has been deleted Succcessfully ",
+  });
+};

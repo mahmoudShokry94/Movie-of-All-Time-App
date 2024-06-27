@@ -34,6 +34,7 @@ const movieSchema = new mongoose.Schema(
       required: true,
     },
     isFavourite: { type: Boolean, default: false },
+    isDeleted: { type: Boolean, default: false },
     additionalDetails: {
       overview: {
         type: String,

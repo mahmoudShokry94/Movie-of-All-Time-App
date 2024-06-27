@@ -13,7 +13,7 @@ export const getMovies = async ({
   };
 }) => {
   console.log("Respository...getMovies...");
-  let mappedFilters: any = {};
+  let mappedFilters: any = {isDeleted: false};
 
   if (filters.movieGenre) {
     mappedFilters.genre = { $in: [filters.movieGenre] };
@@ -78,7 +78,9 @@ export const getMovies = async ({
   return aggregationResult;
 };
 
-export const insertMovie = async (payload: Pick<Movie, "title" | "country" | "year" | "colour">) => {
+export const insertMovie = async (
+  payload: Pick<Movie, "title" | "country" | "year" | "colour">
+) => {
   console.log("Respository...insertMovie...");
 
   return MovieModel.create(payload);
@@ -87,5 +89,27 @@ export const insertMovie = async (payload: Pick<Movie, "title" | "country" | "ye
 export const getMovieById = async (id: string) => {
   console.log("Respository...getMovieById...");
 
-  return MovieModel.findOne({ movieId: id }).select("-_id -__v -createdAt -updatedAt");
+  return MovieModel.findOne({ movieId: id, isDeleted: false }).select(
+    "-_id -__v -createdAt -updatedAt"
+  );
+};
+
+export const updateMovie = async (movieId: string, payload: Partial<Movie>) => {
+  console.log("Respository...updateMovie...");
+
+  return await MovieModel.findOneAndUpdate<Movie>(
+    { movieId },
+    { $set: payload },
+    { new: true }
+  ).select("-_id -__v -createdAt -updatedAt");
+};
+
+export const deleteMovie = async (movieId: string) => {
+  console.log("Respository...deleteMovie...");
+
+  return await MovieModel.findOneAndUpdate<Movie>(
+    { movieId },
+    { $set: { isDeleted: true } },
+    { new: true }
+  ).select("-_id -__v -createdAt -updatedAt");
 };
